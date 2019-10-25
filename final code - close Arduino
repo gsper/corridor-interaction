@@ -1,0 +1,48 @@
+// by Gil Sperling and Erkin Salmorbekov
+//based on the TS-126 Ultrasonic Range Sensor Example Sketch
+
+
+
+#define trigPin 6
+#define echoPin 7
+int triggered=0;
+
+void setup() {
+  Serial.begin (9600);
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+}
+
+void loop() {
+
+  long duration, distance;
+  digitalWrite(trigPin, LOW);  
+  delayMicroseconds(2); 
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10); 
+  digitalWrite(trigPin, LOW);
+  duration = pulseIn(echoPin, HIGH);
+  distance = (duration/2) / 29.1;
+ 
+ 
+//delay(50);
+ if (distance <110) {
+   //Serial.println("triggered");
+   triggered=1;
+ //tone(9,800);
+ }
+  else {
+     triggered=0;
+   Serial.println(triggered);
+ // noTone(9);
+ //Serial.println("idle");
+ }  
+ 
+//send serial data, should like like "202,0" or "100,1"    
+Serial.print(distance);
+Serial.print(",");
+Serial.println(triggered);
+
+delay(10);
+ 
+} 
